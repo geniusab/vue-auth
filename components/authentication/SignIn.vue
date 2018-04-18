@@ -2,7 +2,7 @@
   section.auth
     h1 Sign In
     form.col-6.form-auth(@keydown.enter='beforeSubmit', @submit.prevent="beforeSubmit", autocomplete="on")
-      .form-group(:class="{ 'error': errors.has('email'), 'success': !errors.has('email') && !emailFlag.invalid && emailFlag.dirty}")
+      .form-group
         label(for='exampleInputEmail1') Email address
         input#exampleInputEmail1.form-control(
           name='email',
@@ -29,7 +29,7 @@
       button.btn.btn-primary(type='submit') Submit
     .create-account.col-6
       | New to Coin Loan?
-      nuxt-link.link(to="sign-up" tag="a") Create an account.
+      nuxt-link.link(to="sign-up" tag="a")  Create an account.
 
 
 </template>
@@ -37,7 +37,6 @@
 <script>
   import Vue from 'vue'
   import VeeValidate from 'vee-validate';
-  import  { mapFields } from 'vee-validate';
   Vue.use(VeeValidate);
   export default {
     data () {
@@ -46,12 +45,7 @@
         password: ''
       }
     },
-    computed: {
-      ...mapFields({
-        emailFlag: 'email',
-        passwordFlags: 'password',
-      })
-    },
+
     methods: {
       beforeSubmit(){
         this.$validator.resume();
@@ -68,7 +62,7 @@
           email: this.email,
           password: this.password,
         };
-        await this.$store.dispatch('login', {email: formData.email, password: formData.password})
+        await this.$store.dispatch('login', formData)
           .then(() => {
             this.$router.push('/dashboard')
           });

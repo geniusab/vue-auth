@@ -5,10 +5,9 @@
 
 </template>
 <script>
-  import Header from '../components/shared/header';
   export default {
     components: {
-      appHeader: Header
+      appHeader: () => import('~/components/common/Header')
     }
   }
 </script>

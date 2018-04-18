@@ -1,13 +1,12 @@
 <template>
-  <app-activated/>
+  <app-activate/>
 </template>
 
 <script>
-  import appActivated from '~/components/auth/activated'
   export default {
     middleware: ['auth'],
     components: {
-      appActivated
+      appActivate: () => import('~/components/registration/Activate')
     }
   }
 </script>

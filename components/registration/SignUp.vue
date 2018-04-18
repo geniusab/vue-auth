@@ -1,22 +1,30 @@
 <template lang="pug">
   section.auth
-    h1 Activate Account
+    h1 Sign Up
     form.col-6.form-auth(@keydown.enter='beforeSubmit', @submit.prevent="beforeSubmit")
-      p Your email address: {{email}}
       .form-group
-        label(for='exampleInputPassword1') Activated Number
+        label(for='exampleInputEmail1') Email address
+        input#exampleInputEmail1.form-control(
+        name='email',
+        type='email',
+        placeholder='Enter email',
+        v-model="email",
+        v-validate="'required|email'",
+        :class="{'input': true, 'is-invalid': errors.has('email') }"
+        )
+        span.help.invalid-feedback(v-show="errors.has('email')") email not valid
+      .form-group
+        label(for='exampleInputPassword1') Password
         input#exampleInputPassword1.form-control(
-        autocomplete="off",
-        name='activate',
-        type='text',
-        placeholder='Activate Number',
-        v-model="activate",
-        v-model.trim="activate",
-        v-validate="{ required: true, regex: /^[0-9]*$/, length: 8 }",
-        :class="{'input': true, 'is-invalid': errors.has('activate') }")
-        span.help.invalid-feedback(v-show="errors.has('activate')") The field field format is invalid. The field field must be at least 8 characters.
+        name='password',
+        type='password',
+        placeholder='Password',
+        v-model.trim="password",
+        v-validate="{ required: true, min: 4, max: 64 }",
+        :class="{'input': true, 'is-invalid': errors.has('password') }")
+        span.help.invalid-feedback(v-show="errors.has('password')") password very short
 
-      button.btn.btn-primary(type='submit') Activated
+      button.btn.btn-primary(type='submit') Create account
 
 
 
@@ -25,19 +33,12 @@
 <script>
   import Vue from 'vue'
   import VeeValidate from 'vee-validate';
-  import  { mapFields } from 'vee-validate';
   Vue.use(VeeValidate);
   export default {
-
-    computed: {
-
-      email() {
-        return !this.$store.getters.email ? false : this.$store.getters.email;
-      }
-    },
     data () {
       return {
-        activate: ''
+        email: '',
+        password: ''
       }
     },
     methods: {
@@ -52,15 +53,16 @@
 
 
       async onSubmit () {
-        await this.$store.dispatch('accountActivated', this.activate)
+        const formData = {
+          email: this.email,
+          password: this.password,
+        };
+        await this.$store.dispatch('signUp', formData)
           .then(() => {
-            this.$router.push('/sign-in')
+            this.$router.push('/activate-account')
           });
       }
-    },
-    // created(){
-    //   this.$validator.pause();
-    // }
+    }
   }
 </script>
 
@@ -73,13 +75,6 @@
   }
   label {
     display: block;
-  }
-  .create-account {
-    margin: 10px auto;
-    border: 1px solid #eee;
-    padding: 20px;
-    -webkit-box-shadow: 0 2px 3px #ccc;
-    box-shadow: 0 2px 3px #ccc;
   }
 
   .help {

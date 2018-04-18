@@ -1,12 +1,11 @@
 <template>
-  <app-signin/>
+  <app-sign-in/>
 </template>
 
 <script>
-  import appSignin from '~/components/auth/signin'
     export default {
         components: {
-          appSignin
+          appSignIn: () => import('~/components/authentication/SignIn')
         }
     }
 </script>

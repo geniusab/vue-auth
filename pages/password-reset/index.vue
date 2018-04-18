@@ -1,14 +1,13 @@
 <template>
-  <app-sign-up/>
+  <app-password-reset/>
 </template>
 
 <script>
   export default {
     components: {
-      appSignUp: () => import('~/components/registration/SignUp')
+      appPasswordReset: () => import('~/components/authentication/PasswordReset')
     }
   }
-
 </script>
 
 <style scoped>
